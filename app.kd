@@ -1,0 +1,76 @@
+// Kodo TaskBoard — compact task tracker
+state total = 0
+state completed = 0
+state status = "Ready"
+
+void add_task() {
+  total = total + 1
+  status = "Task added"
+}
+
+void finish_task() {
+  if (completed < total) {
+    completed = completed + 1
+    status = "Task completed"
+  } else {
+    status = "Add a task first"
+  }
+}
+
+void reset_board() {
+  total = 0
+  completed = 0
+  status = "Board cleared"
+}
+
+void.screen main {
+  title ; title."KODO / TASKBOARD"
+  box {
+    text ; tag."// PERSONAL PRODUCTIVITY"
+    text ; headline."Make progress."
+    text ; sub."A simple board. One step at a time."
+  }
+  box {
+    text ; stats."TASKS  {completed} / {total}"
+    text ; status_text."STATUS  {status}"
+    row {
+      button ; add."＋  ADD TASK".onclick.active.add_task()
+      button ; done."✓  COMPLETE".onclick.active.finish_task()
+    }
+    button ; reset."RESET BOARD".onclick.active.reset_board()
+  }
+}
+
+void.screen style {
+  * ; {
+    color ; #111111
+    font ; "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700"
+  }
+  box ; {
+    background ; #f4f4f0
+    color ; #111111
+    radius ; 15
+    padding ; 18
+    margin ; 8
+    border ; "3px solid #111111"
+  }
+  headline ; {
+    size ; 32px
+    bold ; true
+  }
+  tag ; {
+    size ; 12px
+    bold ; true
+  }
+  button ; {
+    background ; #b9e5ff
+    color ; #111111
+    radius ; 15
+    bold ; true
+    padding ; 14
+    border ; "3px solid #111111"
+  }
+  reset ; {
+    background ; #ffcfca
+  }
+}

@@ -1,0 +1,40 @@
+name: Build Kodo TaskBoard
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-and-package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Kodo language
+        run: |
+          git clone --depth 1 https://github.com/DoctorRIDX/kodo-lang.git /tmp/kodo-lang
+          cd /tmp/kodo-lang
+          python -m pip install .
+
+      - name: Check Kodo app
+        run: kodo check app.kd
+
+      - name: Package source
+        run: |
+          zip -r Kodo-TaskBoard.zip app.kd README.md .github
+
+      - name: Upload project artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Kodo-TaskBoard
+          path: Kodo-TaskBoard.zip
+          if-no-files-found: error
